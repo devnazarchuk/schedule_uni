@@ -3,171 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Розклад занять</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
-        color: #343a40;
-        margin: 0;
-        padding: 20px;
-      }
-
-      h1 {
-        text-align: center;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-
-      th,
-      td {
-        padding: 10px;
-        text-align: left;
-        border: 1px solid #dee2e6;
-      }
-
-      th {
-        background-color: #007bff;
-        color: white;
-      }
-
-      tr:nth-child(even) {
-        background-color: #f2f2f2;
-      }
-
-      tr:hover {
-        background-color: #e9ecef;
-      }
-
-      .button-container {
-        text-align: center;
-        margin-top: 20px;
-      }
-
-      button {
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        margin: 0 10px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-      }
-
-      button:hover {
-        background-color: #0056b3;
-      }
-
-      .theme-toggle {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-      }
-
-      .dark-theme {
-        background-color: #343a40;
-        color: #f8f9fa;
-      }
-
-      .dark-theme th {
-        background-color: #495057;
-      }
-
-      .dark-theme button {
-        background-color: #6c757d;
-      }
-
-      .dark-theme button:hover {
-        background-color: #5a6268;
-      }
-    </style>
+    <title>Розклад</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Розклад занять</h1>
-    <table id="schedule-table">
-      <thead>
-        <tr>
-          <th>Дисципліна</th>
-          <th>Час</th>
-          <th>Кабінет</th>
-          <th>Викладач</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Данні будуть додані тут -->
-      </tbody>
-    </table>
-
-    <div class="button-container">
-      <button id="prev-day">Назад</button>
-      <button id="today">Від сьогодні</button>
-      <button id="next-day">Вперед</button>
+    <div class="container">
+      <h1>Розклад занять</h1>
+      <div class="date-controls">
+        <button id="prevDate">Попередній тиждень</button>
+        <button id="currentDate">Сьогодні</button>
+        <button id="nextDate">Наступний тиждень</button>
+      </div>
+      <table id="scheduleTable">
+        <thead>
+          <tr>
+            <th>День</th>
+            <th>Заняття</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">Розклад не завантажено</td>
+          </tr>
+        </tbody>
+      </table>
+      <button id="themeToggle">Змінити тему</button>
     </div>
-
-    <button class="theme-toggle" onclick="toggleTheme()">Змінити тему</button>
-
-    <script>
-      let currentDate = new Date();
-
-      function fetchSchedule(date) {
-        const startDate = date.toISOString().split("T")[0];
-        date.setDate(date.getDate() + 7);
-        const endDate = date.toISOString().split("T")[0];
-
-        fetch(`/api/schedule?start=${startDate}&end=${endDate}`)
-          .then((response) => response.json())
-          .then((data) => {
-            const tbody = document
-              .getElementById("schedule-table")
-              .getElementsByTagName("tbody")[0];
-            // tbody.innerHTML = ""; // Очищуємо таблицю
-
-            const jsonData = JSON.parse(
-              data.data.substring(
-                data.data.indexOf("(") + 1,
-                data.data.lastIndexOf(")")
-              )
-            );
-
-            jsonData.d.forEach((item) => {
-              const row = tbody.insertRow();
-              row.insertCell(0).textContent = item.discipline;
-              row.insertCell(
-                1
-              ).textContent = `${item.study_time_begin} - ${item.study_time_end}`;
-              row.insertCell(2).textContent = item.cabinet;
-              row.insertCell(3).textContent = item.employee;
-            });
-          })
-          .catch((error) => console.error("Error:", error));
-      }
-
-      document.getElementById("prev-day").addEventListener("click", () => {
-        currentDate.setDate(currentDate.getDate() - 1);
-        fetchSchedule(currentDate);
-      });
-
-      document.getElementById("next-day").addEventListener("click", () => {
-        currentDate.setDate(currentDate.getDate() + 1);
-        fetchSchedule(currentDate);
-      });
-
-      document.getElementById("today").addEventListener("click", () => {
-        currentDate = new Date(); // Встановлюємо сьогоднішню дату
-        fetchSchedule(currentDate);
-      });
-
-      function toggleTheme() {
-        document.body.classList.toggle("dark-theme");
-      }
-
-      // Завантаження розкладу на початку
-      fetchSchedule(currentDate);
-    </script>
+    <script src="script.js"></script>
   </body>
 </html>
