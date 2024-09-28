@@ -119,14 +119,13 @@
         date.setDate(date.getDate() + 7);
         const endDate = date.toISOString().split("T")[0];
 
-        fetch("/api/schedule?start=2024-09-28&end=2024-10-05")
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data); // Додайте обробку даних
-              })
-              .catch((error) =>
-                console.error("Error fetching schedule:", error)
-              );
+        fetch(`/api/schedule?start=${startDate}&end=${endDate}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const tbody = document
+              .getElementById("schedule-table")
+              .getElementsByTagName("tbody")[0];
+            // tbody.innerHTML = ""; // Очищуємо таблицю
 
             const jsonData = JSON.parse(
               data.data.substring(
