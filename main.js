@@ -16,7 +16,7 @@ let formattedStartDate = formatDate(startDate);
 let formattedEndDate = formatDate(endDate);
 
 // Формуємо URL з динамічними датами
-let url = ``;
+let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp1727542856195&aVuzID=11613&aStudyGroupID=%22K2K3ZY5AE2ZA%22&aStartDate=%22${startDate}%22&aEndDate=%22${endDate}%22&aStudyTypeID=null`;
 
 // Функція для отримання та відображення розкладу
 function fetchSchedule() {
