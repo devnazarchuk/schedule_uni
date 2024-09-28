@@ -20,4 +20,4 @@
 
 1. Клонувати репозиторій:
    ```bash
-   git clone https://github.com/ваше-ім'я/розклад-занять.git
+   git clone hhttps://github.com/devnazarchuk/schedule_uni.git
