@@ -9,9 +9,10 @@
   <body>
     <h1>Розклад занять</h1>
     <div class="date-controls">
-      <button id="prevDate">Попередній тиждень</button>
-      <button id="currentDate">Сьогодні</button>
-      <button id="nextDate">Наступний тиждень</button>
+      <button class="date-buttons" id="prevDate">Попередній тиждень</button>
+      <button class="date-buttons" id="currentDate">Сьогодні</button>
+      <button class="date-buttons" id="nextDate">Наступний тиждень</button>
+      <button class="date-buttons" id="themeToggle">☀️</button>
     </div>
     <table id="schedule-table" border="1">
       <thead>
@@ -19,7 +20,7 @@
           <th>Дата</th>
           <th>Час</th>
           <th>Дисципліна</th>
-          <th>Тип заняття</th>
+          <th class="study-type">Тип заняття</th>
           <th>Аудиторія</th>
           <th>Викладач</th>
         </tr>
@@ -28,8 +29,6 @@
         <!-- Дані будуть додаватися сюди -->
       </tbody>
     </table>
-
-    <button id="themeToggle">Змінити тему</button>
 
     <script src="script.js"></script>
   </body>
