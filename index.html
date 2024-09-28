@@ -3,32 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Розклад</title>
+    <title>Розклад занять</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>Розклад занять</h1>
-      <div class="date-controls">
-        <button id="prevDate">Попередній тиждень</button>
-        <button id="currentDate">Сьогодні</button>
-        <button id="nextDate">Наступний тиждень</button>
-      </div>
-      <table id="scheduleTable">
-        <thead>
-          <tr>
-            <th>День</th>
-            <th>Заняття</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="2">Розклад не завантажено</td>
-          </tr>
-        </tbody>
-      </table>
-      <button id="themeToggle">Змінити тему</button>
+    <h1>Розклад занять</h1>
+    <div class="date-controls">
+      <button id="prevDate">Попередній тиждень</button>
+      <button id="currentDate">Сьогодні</button>
+      <button id="nextDate">Наступний тиждень</button>
     </div>
-    <script src="script.js"></script>
+    <table id="schedule-table" border="1">
+      <thead>
+        <tr>
+          <th>Дата</th>
+          <th>Час</th>
+          <th>Дисципліна</th>
+          <th>Тип заняття</th>
+          <th>Аудиторія</th>
+          <th>Викладач</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Дані будуть додаватися сюди -->
+      </tbody>
+    </table>
+
+    <button id="themeToggle">Змінити тему</button>
   </body>
 </html>
