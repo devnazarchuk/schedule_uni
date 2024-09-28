@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Розклад занять</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="main.js"></script>
   </head>
   <body style="display: flex; flex-direction: column">
     <h1 style="display: flex; justify-content: center">Розклад занять</h1>
@@ -22,5 +24,31 @@
         <!-- Дані будуть додаватися сюди -->
       </tbody>
     </table>
+    <script>
+      fetch("/api/schedule")
+        .then((response) => response.json())
+        .then((data) => {
+          const tbody = document
+            .getElementById("schedule-table")
+            .getElementsByTagName("tbody")[0];
+          const jsonData = JSON.parse(
+            data.data.substring(
+              data.data.indexOf("(") + 1,
+              data.data.lastIndexOf(")")
+            )
+          );
+
+          jsonData.d.forEach((item) => {
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = item.discipline;
+            row.insertCell(
+              1
+            ).textContent = `${item.study_time_begin} - ${item.study_time_end}`;
+            row.insertCell(2).textContent = item.cabinet;
+            row.insertCell(3).textContent = item.employee;
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
   </body>
 </html>
