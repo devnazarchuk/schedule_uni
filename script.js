@@ -1,3 +1,4 @@
+// Знаходимо елементи
 const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
 const groupSelect = document.getElementById('groupSelect');
 const themeToggle = document.getElementById('themeToggle');
@@ -20,16 +21,8 @@ endDate.setDate(startDate.getDate() + 7);
 // Оновлюємо розклад при зміні групи
 groupSelect.addEventListener('change', fetchSchedule);
 
-// Функція для отримання розкладу
+// Функція для отримання розкладу (з фейковими даними для прикладу)
 function fetchSchedule() {
-  let groupID = groupSelect.value;
-  let formattedStartDate = formatDate(startDate);
-  let formattedEndDate = formatDate(endDate);
-  
-  let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
-
-  // Симуляція отримання даних для прикладу
-  // У реальному сценарії тут буде завантаження даних
   loadFakeData();
 }
 
@@ -73,4 +66,10 @@ function loadFakeData() {
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('dark-theme');
   isDarkTheme = !isDarkTheme;
-  themeToggle.innerText = isDarkTheme
+  themeToggle.innerText = isDarkTheme ? "🌙" : "☀️";
+});
+
+// Завантаження даних при старті сторінки
+window.onload = function() {
+  fetchSchedule();
+};
