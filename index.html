@@ -3,23 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Розклад занять КН-11</title>
+    <title>Розклад занять</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <meta name="theme-color" content="#ffffff" />
   </head>
   <body>
-    <h1>Розклад занять КН-11</h1>
-    <div class="date-controls">
-      <button class="date-buttons" id="prevDate">Попередній тиждень</button>
-      <button class="date-buttons" id="currentDate">Сьогодні</button>
-      <button class="date-buttons" id="nextDate">Наступний тиждень</button>
-      <button class="date-buttons" id="themeToggle">☀️</button>
+    <h1>Розклад занять</h1>
+
+    <div class="group-selection">
+      <label for="groupSelect">Оберіть групу:</label>
+      <select id="groupSelect">
+        <option value="K2K3ZY5AE2ZA">КН-11</option>
+        <option value="K1X2Y3Z4A5B6">КН-12</option>
+      </select>
     </div>
+
+    <div class="date-controls">
+      <button id="prevDate">Попередній тиждень</button>
+      <button id="currentDate">Сьогодні</button>
+      <button id="nextDate">Наступний тиждень</button>
+      <button id="themeToggle">☀️</button>
+    </div>
+
     <table id="schedule-table" border="1">
       <thead>
         <tr>
@@ -35,11 +39,7 @@
         <!-- Дані будуть додаватися сюди -->
       </tbody>
     </table>
-    <footer>
-      <a href="https://t.me/artem1x1"
-        ><h2>Made with <span class="highlight">Love</span> by Artem ❤️</h2></a
-      >
-    </footer>
+
     <script src="script.js"></script>
   </body>
 </html>
