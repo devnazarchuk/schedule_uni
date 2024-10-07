@@ -12,6 +12,15 @@ body {
   padding: 20px;
 }
 
+.group-selection {
+  margin-bottom: 20px;
+}
+
+#groupSelect {
+  padding: 5px;
+  font-size: 16px;
+}
+
 .date-controls {
   margin-bottom: 20px;
 }
@@ -38,8 +47,7 @@ table {
   margin-top: 20px;
 }
 
-th,
-td {
+th, td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: center;
@@ -51,16 +59,13 @@ th {
 }
 
 .dark-theme {
-  background-color: #0f0f0f;
+  background-color: #333;
   color: #f9f9f9;
 }
 
 .dark-theme button {
   background-color: #444;
   color: #f9f9f9;
-}
-.dark-theme button:hover {
-  background-color: #575757;
 }
 
 .dark-theme th {
@@ -73,81 +78,54 @@ th {
   right: 10px;
   width: 50px;
   height: 50px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
 }
+
+/* Виділення сьогоднішньої дати та ряду */
+.today-date {
+  background-color: lightblue;
+}
+
+.subject-math {
+  background-color: #f4cccc; /* світлий червоний тон */
+}
+
+.subject-science {
+  background-color: #d9ead3; /* світлий зелений тон */
+}
+
+.subject-history {
+  background-color: #c9daf8; /* світлий блакитний тон */
+}
+
+.dark-theme .subject-math {
+  background-color: #c00000; /* темно-червоний для нічної теми */
+}
+
+.dark-theme .subject-science {
+  background-color: #6aa84f; /* темно-зелений для нічної теми */
+}
+
+.dark-theme .subject-history {
+  background-color: #6d9eeb; /* темно-синій для нічної теми */
+}
+
 @media screen and (max-width: 868px) {
   table {
     width: 100%;
     font-size: 12px;
   }
 
-  th,
-  td {
+  th, td {
     padding: 5px;
   }
+  
   button {
     padding: 5px 10px;
   }
-  #themeToggle {
-    width: 40px;
-    height: 40px;
-  }
 }
+
 @media screen and (max-width: 768px) {
   .study-type {
     display: none;
   }
-  #schedule-table td:nth-child(4) {
-    display: none; /* Сховати дані в 4-му стовпці (Тип заняття) */
-  }
-  h2 {
-    font-size: 16px;
-  }
-  body {
-    padding: 10px;
-  }
-}
-@media screen and (max-width: 640px) {
-  button {
-    font-size: 14px;
-  }
-  #themeToggle {
-    width: 30px;
-    height: 30px;
-  }
-  h2 {
-    font-size: 14px;
-  }
-}
-@media screen and (max-width: 425px) {
-  table {
-    font-size: 10px;
-  }
-  th,
-  td {
-    padding: 3px;
-  }
-  .date-controls {
-    display: flex;
-    flex-direction: column;
-  }
-  .date-buttons {
-    padding: 5px 20px;
-  }
-}
-@media screen and (max-width: 350px) {
-  table {
-    font-size: 8px;
-  }
-  #themeToggle {
-    width: 95%;
-    position: inherit;
-  }
-}
-a {
-  text-decoration: none;
-  color: #007bff;
 }
