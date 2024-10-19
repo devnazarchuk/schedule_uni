@@ -1,45 +1,41 @@
 <!DOCTYPE html>
 <html lang="uk">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Розклад занять</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <h1>Розклад занять</h1>
 
-    <div class="group-selection">
-      <label for="groupSelect">Оберіть групу:</label>
-      <select id="groupSelect">
-        <option value="K2K3ZY5AE2ZA">КН-11</option>
-        <option value="K1X2Y3Z4A5B6">КН-12</option>
-      </select>
-    </div>
-
     <div class="date-controls">
-      <button id="prevDate">Попередній тиждень</button>
-      <button id="currentDate">Сьогодні</button>
-      <button id="nextDate">Наступний тиждень</button>
-      <button id="themeToggle">☀️</button>
+        <button id="prevDate">Попередній тиждень</button>
+        <button id="currentDate">Сьогодні</button>
+        <button id="nextDate">Наступний тиждень</button>
+        <button id="themeToggle">☀️</button>
+        <select id="groupSelect">
+            <option value="WHD6RSALOU79">КН-11</option>
+            <option value="FDCULZWOHDBG">КН-12</option>
+        </select>
     </div>
 
     <table id="schedule-table" border="1">
-      <thead>
-        <tr>
-          <th>Дата</th>
-          <th>Час</th>
-          <th>Дисципліна</th>
-          <th class="study-type">Тип заняття</th>
-          <th>Аудиторія</th>
-          <th>Викладач</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Дані будуть додаватися сюди -->
-      </tbody>
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Час</th>
+                <th>Дисципліна</th>
+                <th class="study-type">Тип заняття</th>
+                <th>Аудиторія</th>
+                <th>Викладач</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Дані будуть додаватися сюди -->
+        </tbody>
     </table>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
