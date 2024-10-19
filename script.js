@@ -1,84 +1,83 @@
-// Знаходимо елементи
-const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
-const groupSelect = document.getElementById('groupSelect');
-const themeToggle = document.getElementById('themeToggle');
-let isDarkTheme = false;
-
-// Функція для форматування дати у формат "dd.mm.yyyy"
+// Функція для форматування дати
 function formatDate(date) {
-  let day = ("0" + date.getDate()).slice(-2);
-  let month = ("0" + (date.getMonth() + 1)).slice(-2);
-  let year = date.getFullYear();
-  return `${day}.${month}.${year}`;
+    let day = ("0" + date.getDate()).slice(-2);
+    let month = ("0" + (date.getMonth() + 1)).slice(-2);
+    let year = date.getFullYear();
+    return `${day}.${month}.${year}`;
 }
 
-// Отримання поточної дати і кінець тижня
+// Параметри для груп
+let groupID = 'WHD6RSALOU79';  // За замовчуванням КН-11
 let currentDate = new Date();
-let startDate = new Date();
-let endDate = new Date();
-endDate.setDate(startDate.getDate() + 7);
+let startDate = new Date(currentDate);
+let endDate = new Date(currentDate);
+endDate.setDate(endDate.getDate() + 7);
 
-// Оновлюємо розклад при зміні групи
-groupSelect.addEventListener('change', fetchSchedule);
-
-// Функція для отримання розкладу з сервера
+// Функція для отримання розкладу
 function fetchSchedule() {
-  let groupID = groupSelect.value;
-  let formattedStartDate = formatDate(startDate);
-  let formattedEndDate = formatDate(endDate);
+    let formattedStartDate = formatDate(startDate);
+    let formattedEndDate = formatDate(endDate);
 
-  let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=${Date.now()}&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
+    let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
 
-  const script = document.createElement('script');
-  script.src = url;
-  document.body.appendChild(script); // Додаємо скрипт для JSONP запиту
+    const script = document.createElement('script');
+    script.src = url;
+    document.body.appendChild(script);
 }
 
-// Функція для обробки відповіді JSONP
+// JSONP callback
 function jsonp(data) {
-  scheduleTable.innerHTML = '';  // Очищаємо таблицю
+    const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
+    scheduleTable.innerHTML = '';  // Очищуємо таблицю
 
-  data.d.forEach(row => {
-    let newRow = scheduleTable.insertRow();
-    newRow.insertCell(0).innerText = row.full_date;
-    newRow.insertCell(1).innerText = `${row.study_time_begin} - ${row.study_time_end}`;
-    newRow.insertCell(2).innerText = row.discipline;
-    newRow.insertCell(3).innerText = row.study_type;
-    newRow.insertCell(4).innerText = row.cabinet;
-    newRow.insertCell(5).innerText = row.employee;
-    
-    // Додаємо клас для фарбування предметів
-    newRow.classList.add('subject-' + row.discipline.toLowerCase());
+    data.d.forEach(row => {
+        let newRow = scheduleTable.insertRow();
+        let currentRowDate = new Date(row.full_date);
 
-    // Виділяємо сьогоднішню дату
-    if (row.full_date === formatDate(new Date())) {
-      newRow.classList.add('today-date');
-    }
-  });
+        // Виділення сьогоднішньої дати
+        if (currentRowDate.toDateString() === currentDate.toDateString()) {
+            newRow.classList.add('today-row');
+        }
 
-  highlightToday();
+        newRow.insertCell(0).innerText = row.full_date;
+        newRow.insertCell(1).innerText = row.study_time_begin + ' - ' + row.study_time_end;
+        newRow.insertCell(2).innerText = row.discipline;
+        newRow.insertCell(3).innerText = row.study_type;
+        newRow.insertCell(4).innerText = row.cabinet;
+        newRow.insertCell(5).innerText = row.employee;
+    });
 }
 
-// Функція для виділення сьогоднішньої дати
-function highlightToday() {
-  let today = formatDate(new Date());
-  let rows = scheduleTable.getElementsByTagName('tr');
-  for (let row of rows) {
-    let dateCell = row.cells[0];
-    if (dateCell && dateCell.innerText === today) {
-      row.classList.add('today-date');
-    }
-  }
-}
-
-// Перемикання теми
-themeToggle.addEventListener('click', () => {
-  document.body.classList.toggle('dark-theme');
-  isDarkTheme = !isDarkTheme;
-  themeToggle.innerText = isDarkTheme ? "🌙" : "☀️";
+// Функція для зміни групи
+document.getElementById('groupSelect').addEventListener('change', (event) => {
+    groupID = event.target.value;
+    fetchSchedule();
 });
 
-// Завантаження даних при старті сторінки
-window.onload = function() {
-  fetchSchedule();
-};
+// Кнопки зміни тижня
+document.getElementById('prevDate').addEventListener('click', () => {
+    startDate.setDate(startDate.getDate() - 7);
+    endDate.setDate(endDate.getDate() - 7);
+    fetchSchedule();
+});
+
+document.getElementById('nextDate').addEventListener('click', () => {
+    startDate.setDate(startDate.getDate() + 7);
+    endDate.setDate(endDate.getDate() + 7);
+    fetchSchedule();
+});
+
+document.getElementById('currentDate').addEventListener('click', () => {
+    startDate = new Date(currentDate);
+    endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 7);
+    fetchSchedule();
+});
+
+// Функція зміни теми
+document.getElementById('themeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+});
+
+// Виклик функції отримання розкладу при завантаженні сторінки
+fetchSchedule();
