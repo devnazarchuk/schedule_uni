@@ -79,12 +79,8 @@ th {
     color: blue;
 }
 
-/* Приховування колонки на екранах менше 768px */
 @media screen and (max-width: 768px) {
     .study-type {
-        display: none;
-    }
-    table td:nth-child(4), table th:nth-child(4) {
         display: none;
     }
 }
