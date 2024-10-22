@@ -9,20 +9,24 @@ function formatDate(date) {
 // Отримуємо поточну дату
 let currentDate = new Date(); // Сьогоднішня дата
 let startDate = new Date(currentDate);
-startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок
+startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок поточного тижня
 let endDate = new Date(startDate);
-endDate.setDate(startDate.getDate() + 4); // П'ятниця
+endDate.setDate(startDate.getDate() + 4); // П'ятниця поточного тижня
 
 // Форматування дат
 let formattedStartDate = formatDate(startDate);
 let formattedEndDate = formatDate(endDate);
 
-// Групи КН-11 і КН-12
-let groupID = "K2K3ZY5AE2ZA"; // За замовчуванням КН-11
+// Група за замовчуванням (КН-11)
+let groupID = "K2K3ZY5AE2ZA";
 
 // Формуємо URL для запиту
 function fetchSchedule() {
+    formattedStartDate = formatDate(startDate); // Оновлюємо форматовану початкову дату
+    formattedEndDate = formatDate(endDate); // Оновлюємо форматовану кінцеву дату
+
     let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
+
     const script = document.createElement('script');
     script.src = url;
     document.body.appendChild(script);
@@ -66,9 +70,9 @@ document.getElementById('prevDate').addEventListener('click', () => {
 
 document.getElementById('currentDate').addEventListener('click', () => {
     startDate = new Date(currentDate);
-    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок
+    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок поточного тижня
     endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 4); // П'ятниця
+    endDate.setDate(startDate.getDate() + 4); // П'ятниця поточного тижня
     fetchSchedule();
 });
 
@@ -81,7 +85,6 @@ document.getElementById('nextDate').addEventListener('click', () => {
 // Додати обробник події для кнопки зміни теми
 document.getElementById('themeToggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-theme');
-    document.getElementById('themeToggle').classList.toggle('rotate');
 });
 
 // Виклик функції отримання розкладу при завантаженні сторінки
