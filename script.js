@@ -26,7 +26,11 @@ function fetchSchedule() {
     formattedEndDate = formatDate(endDate); // Оновлюємо форматовану кінцеву дату
 
     let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
-
+    if (groupID=="K2K3ZY5AE2ZA"){
+        titleGroup.textContent = "Розклад занять групи КН-11"}
+        else{
+            titleGroup.textContent = "Розклад занять групи КН-12"
+        }
     const script = document.createElement('script');
     script.src = url;
     document.body.appendChild(script);
@@ -58,6 +62,12 @@ function jsonp(data) {
 // Зміна групи
 document.getElementById('groupSelect').addEventListener('change', (event) => {
     groupID = event.target.value;
+    titleGroup = document.getElementById("titleGroup")
+    if (groupID=="K2K3ZY5AE2ZA"){
+    titleGroup.textContent = "Розклад занять групи КН-11"}
+    else{
+        titleGroup.textContent = "Розклад занять групи КН-12"
+    }
     fetchSchedule();
 });
 
@@ -88,4 +98,33 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 });
 
 // Виклик функції отримання розкладу при завантаженні сторінки
+
+document.getElementById('disciplineSelect').addEventListener('change', (event) => {
+    const selectedDiscipline = event.target.value;
+    const rows = scheduleTable.getElementsByTagName('tr');
+    for (let i = 0; i < rows.length; i++) {
+        const disciplineCell = rows[i].cells[2].innerText;
+        rows[i].style.display = (selectedDiscipline === 'all' || disciplineCell === selectedDiscipline) ? '' : 'none';
+    }
+});
+
 fetchSchedule();
+const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
+document.getElementById('exportCSV').addEventListener('click', () => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    const rows = scheduleTable.getElementsByTagName('tr');
+    for (let row of rows) {
+        const cols = row.getElementsByTagName('td');
+        const rowData = [];
+        for (let col of cols) {
+            rowData.push(col.innerText);
+        }
+        csvContent += rowData.join(",") + "\r\n";
+    }
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'schedule.csv');
+    document.body.appendChild(link);
+    link.click();
+});

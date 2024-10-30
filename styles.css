@@ -26,13 +26,16 @@ button {
     background-color: #007bff;
     color: white;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s; 
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-2px);
 }
-
+button:active {
+    transform: translateY(0);
+}
 table {
     width: 80%;
     border-collapse: collapse;
@@ -49,30 +52,28 @@ th {
     background-color: #007bff;
     color: white;
 }
-#groupSelect {
+select {
     background-color: dodgerblue;
     padding: 10px 15px;
     color: white;
     border-radius: 5px;
     border: 1px gray solid;
 }
-#groupSelect:hover{
+select:hover{
     background-color: #0056b3;
 }
 
-.dark-theme #groupSelect {
+.dark-theme select {
     background-color: #444;
     padding: 10px 15px;
     color: white;
     border-radius: 5px;
     border: 1px gray solid;
 }
-.dark-theme #groupSelect:hover{
+.dark-theme select:hover{
     background-color: #222;
 }
-.dark-theme button:hover {
-    background-color: #222;
-}
+
 #themeToggle {
     position: absolute;
     top: 10px;
@@ -100,7 +101,10 @@ th {
     background-color: #444;
     color: #f9f9f9;
 }
+.dark-theme button:hover {
+    background-color: #222;
 
+}
 .dark-theme th {
     background-color: #555;
 }
@@ -156,7 +160,7 @@ th {
         padding: 6px 8px;
         margin: 3px;
     }
-    #groupSelect {
+    select {
         padding: 6px 8px;
     }
     #themeToggle {
@@ -178,3 +182,4 @@ th {
 .dark-theme #themeToggle:hover {
     background-color: #0056b3;
 }
+
