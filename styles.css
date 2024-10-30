@@ -182,4 +182,6 @@ select:hover{
 .dark-theme #themeToggle:hover {
     background-color: #0056b3;
 }
-
+#summary-table tr:hover {
+    background-color: #e0e0e0; 
+}

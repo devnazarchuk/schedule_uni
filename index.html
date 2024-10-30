@@ -28,6 +28,7 @@
             <option value="Комп'ютерна дискретна матеаматика">Дискретка</option>
         </select>
         <button id="exportCSV">Експортувати у CSV</button>
+        <button id="showSummary">Показати висновок</button>
     </div>
 
     <table id="schedule-table">
@@ -45,6 +46,34 @@
             <!-- Дані будуть додаватися сюди -->
         </tbody>
     </table>
+
+<div id="summary-container" style="display: none;">
+    <h2>Підсумок предметів</h2>
+    <table id="summary-table">
+        <thead>
+            <!-- Заголовки таблиці будуть додані через JavaScript -->
+        </thead>
+        <tbody>
+            <!-- Дані будуть додаватися сюди -->
+        </tbody>
+    </table>
+</div>
+
+
+<div id="detailed-container" style="display: none;">
+    <h2>Детальний розклад для вибраного предмета</h2>
+    <table id="detailed-table">
+        <thead>
+            <!-- Заголовки таблиці будуть додані через JavaScript -->
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="5">Натисніть на предмет, щоб побачити детальну інформацію</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
     <script src="script.js"></script>
 </body>
