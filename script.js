@@ -194,7 +194,7 @@ document.getElementById('showSummary').addEventListener('click', () => {
 
         // Додаємо стиль для рядка
         row.style.cursor = 'pointer'; // Курсор у вигляді руки
-        row.onmouseover = () => row.style.backgroundColor = '#f0f0f0'; // Зміна кольору при наведенні
+        row.onmouseover = () => row.style.backgroundColor = '#8fbcff'; // Зміна кольору при наведенні
         row.onmouseout = () => row.style.backgroundColor = ''; // Відновлення кольору
     }
 });
