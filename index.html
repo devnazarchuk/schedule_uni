@@ -8,28 +8,31 @@
 </head>
 <body>
     <h1 id="titleGroup">Розклад занять групи</h1>
-
-    <div class="date-controls">
-        <button id="prevDate">Попередній тиждень</button>
-        <button id="currentDate">Сьогодні</button>
-        <button id="nextDate">Наступний тиждень</button>
-        <button id="themeToggle">☀️</button>
-        <select id="groupSelect">
-            <option value="K2K3ZY5AE2ZA">КН-11</option>
-            <option value="3POJ9CKXSCAW">КН-12</option>
-        </select>
-        <select id="disciplineSelect">
-            <option value="all">Всі Предмети</option>
-            <option value="Вища математика">Математика</option>
-            <option value="Іноземна мова">English</option>
-            <option value="Ділова українська мова та академічне письмо">Українська мова</option>
-            <option value="Алгоритмізація та програмування">Алго&прог</option>
-            <option value="Філософія">Філософія</option>
-            <option value="Комп'ютерна дискретна матеаматика">Дискретка</option>
-        </select>
-        <button id="exportCSV">Експортувати у CSV</button>
-        <button id="showSummary">Показати висновок</button>
+    <div>
+            <div class="date-controls">
+                <button id="prevDate">Попередній</button>
+                <button id="currentDate">Цей тиждень</button>
+                <button id="nextDate">Наступний</button>
+            </div>
+            <button id="themeToggle">☀️</button>
+            <select id="groupSelect">
+                <option value="K2K3ZY5AE2ZA">КН-11</option>
+                <option value="3POJ9CKXSCAW">КН-12</option>
+            </select>
+            <select id="disciplineSelect">
+                <option value="all">Всі Предмети</option>
+                <option value="Вища математика">Математика</option>
+                <option value="Іноземна мова">English</option>
+                <option value="Ділова українська мова та академічне письмо">Українська мова</option>
+                <option value="Алгоритмізація та програмування">Алго&прог</option>
+                <option value="Філософія">Філософія</option>
+                <option value="Комп'ютерна дискретна матеаматика">Дискретка</option>
+            </select>
+            <button id="exportCSV">Експортувати у CSV</button>
+            <button id="showAllSchedule">Показати увесь розклад</button>
+            <button id="showSummary">Підсумок тижня</button>
     </div>
+
 
     <table id="schedule-table">
         <thead>

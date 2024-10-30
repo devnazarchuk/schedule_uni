@@ -131,10 +131,15 @@ document.getElementById('exportCSV').addEventListener('click', () => {
 // Оголошення глобальних змінних
 let subjectSummary = {}; // Об'єкт для зберігання підсумків предметів
 
+// Приховуємо кнопку експорту та кнопку для показу увесь розклад при завантаженні
+document.getElementById('exportCSV').style.display = 'none';
+document.getElementById('showAllSchedule').style.display = 'none';
+
 // Додаємо обробник подій для кнопки "Показати висновок"
 document.getElementById('showSummary').addEventListener('click', () => {
     // Очищуємо старі дані
     subjectSummary = {};
+    
 
     // Заповнюємо об'єкт subjectSummary даними з розкладу
     const rows = scheduleTable.getElementsByTagName('tr');
@@ -151,8 +156,19 @@ document.getElementById('showSummary').addEventListener('click', () => {
     }
 
     // Сховати основну таблицю та показати таблицю підсумків
+    document.getElementById('schedule-table').style.display = 'none';
     scheduleTable.style.display = 'none';
     document.getElementById('summary-container').style.display = 'block';
+    document.getElementById('showAllSchedule').style.display = 'block';
+    // Сховати інші кнопки
+    document.getElementById('prevDate').style.display = 'none';
+    document.getElementById('currentDate').style.display = 'none';
+    document.getElementById('nextDate').style.display = 'none';
+    document.getElementById('groupSelect').style.display = 'none';
+    document.getElementById('disciplineSelect').style.display = 'none';
+
+    // Показати кнопку експорту
+    document.getElementById('exportCSV').style.display = 'inline-block';
 
     // Створюємо нову колонку для підсумків
     const summaryTable = document.getElementById('summary-table');
@@ -183,11 +199,63 @@ document.getElementById('showSummary').addEventListener('click', () => {
     }
 });
 
+// Додаємо обробник подій для кнопки "Показати увесь розклад"
+document.getElementById('showAllSchedule').addEventListener('click', () => {
+    // Очищення всіх таблиць
+    clearSummaryTable();
+    clearDetailedTable();
+    clearMainTable();
+    document.getElementById('schedule-table').style.display = 'block';
+
+    // Повертаємося до основного розкладу
+    fetchSchedule(); // Викликаємо функцію для отримання основного розкладу
+    document.getElementById('showAllSchedule').style.display = 'none';
+    // Сховати таблицю підсумків та показати основну таблицю
+    document.getElementById('summary-container').style.display = 'none';
+    scheduleTable.style.display = 'block';
+
+    // Показати інші кнопки
+    document.getElementById('prevDate').style.display = 'inline-block';
+    document.getElementById('currentDate').style.display = 'inline-block';
+    document.getElementById('nextDate').style.display = 'inline-block';
+    document.getElementById('groupSelect').style.display = 'inline-block';
+    document.getElementById('disciplineSelect').style.display = 'inline-block';
+
+    // Сховати кнопку експорту
+    document.getElementById('exportCSV').style.display = 'none';
+});
+
+// Функція для очищення таблиці підсумків
+function clearSummaryTable() {
+    const summaryTable = document.getElementById('summary-table');
+    summaryTable.innerHTML = ''; // Очищаємо таблицю
+}
+
+// Функція для очищення таблиці з детальною інформацією
+function clearDetailedTable() {
+    const detailedTable = document.getElementById('detailed-table');
+    detailedTable.innerHTML = ''; // Очищаємо таблицю
+}
+function clearMainTable() {
+    const scheduletable = document.getElementById('schedule-table');
+    scheduletable.innerHTML = `<table id="schedule-table">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Час</th>
+                <th>Дисципліна</th>
+                <th class="study-type">Тип заняття</th>
+                <th>Аудиторія</th>
+                <th>Викладач</th>
+            </tr>
+        </thead>
+        <tbody></tbody>`; // Очищаємо таблицю
+}
 // Функція для показу детального розкладу
 function showDetailedSchedule(discipline) {
     const detailedTable = document.getElementById('detailed-table');
     detailedTable.innerHTML = ''; // Очищаємо таблицю
-
+    clearMainTable();
     const detailedHeader = detailedTable.createTHead();
     const headerRow = detailedHeader.insertRow();
     headerRow.insertCell(0).innerText = 'Дата';
@@ -230,3 +298,6 @@ document.getElementById('detailed-container').style.display = 'none';
 
 // Сховати таблицю підсумків при завантаженні сторінки
 document.getElementById('summary-container').style.display = 'none';
+
+// Виклик функції для отримання основного розкладу
+fetchSchedule();
