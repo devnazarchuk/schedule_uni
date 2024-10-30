@@ -189,3 +189,6 @@ select:hover{
     background-color:#007bff;
     color: white;
 }
+.dark-theme #summary-table thead,.dark-theme #detailed-table thead {
+    background-color: #555;
+}
