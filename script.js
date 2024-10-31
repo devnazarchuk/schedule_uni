@@ -207,8 +207,10 @@ document.getElementById('showAllSchedule').addEventListener('click', () => {
     document.getElementById('summary-container').style.display = 'none';
     document.getElementById('detailed-container').style.display = 'none';
     document.getElementById('schedule-table').style.display = 'table';
-    document.getElementById('exportCSV').style.display ="inline"
+    document.getElementById('exportCSV').style.display ="none"
     document.getElementById("showSummary").textContent ="Підсумок тижня"
     document.getElementById("showAllSchedule").style.display ="none"
+    document.getElementById('groupSelect').style.display ="inline"
+    document.getElementById('disciplineSelect').style.display ="inline"
     fetchSchedule(); // Оновлюємо розклад
 });
