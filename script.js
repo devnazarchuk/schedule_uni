@@ -206,7 +206,7 @@ document.getElementById('showSummary').addEventListener('click', showSummary);
 document.getElementById('showAllSchedule').addEventListener('click', () => {
     document.getElementById('summary-container').style.display = 'none';
     document.getElementById('detailed-container').style.display = 'none';
-    document.getElementById('schedule-table').style.display = 'block';
+    document.getElementById('schedule-table').style.display = 'table';
     document.getElementById('exportCSV').style.display ="inline"
     document.getElementById("showSummary").textContent ="Підсумок тижня"
     document.getElementById("showAllSchedule").style.display ="none"

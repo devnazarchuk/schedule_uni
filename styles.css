@@ -119,6 +119,9 @@ select:hover{
     color: blue;
 }
 
+#schedule-table{
+    display: table;
+}
 /* Приховування колонки на екранах менше 768px */
 @media screen and (max-width: 768px) {
     .study-type {
