@@ -212,6 +212,7 @@ document.getElementById('showAllSchedule').addEventListener('click', () => {
     document.getElementById('showAllSchedule').style.display = 'none';
     // Сховати таблицю підсумків та показати основну таблицю
     document.getElementById('summary-container').style.display = 'none';
+    document.getElementById('detailed-container').style.display = 'none';
     scheduleTable.style.display = 'block';
 
     // Показати інші кнопки
