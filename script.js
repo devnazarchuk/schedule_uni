@@ -159,6 +159,7 @@ function showSummary() {
     // Сховати основну таблицю та показати таблицю підсумків
     document.getElementById('schedule-table').style.display = 'none';
     document.getElementById('summary-container').style.display = 'block';
+        document.getElementById("showAllSchedule").style.display ="inline"
 }
 
 // Функція для показу детального розкладу
@@ -207,5 +208,7 @@ document.getElementById('showAllSchedule').addEventListener('click', () => {
     document.getElementById('detailed-container').style.display = 'none';
     document.getElementById('schedule-table').style.display = 'block';
     document.getElementById('exportCSV').style.display ="inline"
+    document.getElementById("showSummary").textContent ="Підсумок тижня"
+    document.getElementById("showAllSchedule").style.display ="none"
     fetchSchedule(); // Оновлюємо розклад
 });
