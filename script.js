@@ -1,146 +1,119 @@
-// Функція для форматування дати у формат "dd.mm.yyyy"
-function formatDate(date) {
-    let day = ("0" + date.getDate()).slice(-2);
-    let month = ("0" + (date.getMonth() + 1)).slice(-2);
-    let year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-}
+// Форматування дати у формат "dd.mm.yyyy"
+const formatDate = (date) => `${("0" + date.getDate()).slice(-2)}.${("0" + (date.getMonth() + 1)).slice(-2)}.${date.getFullYear()}`;
 
-// Отримуємо поточну дату
-let currentDate = new Date(); // Сьогоднішня дата
-let startDate = new Date(currentDate);
+// Глобальні змінні
+let currentDate = new Date(), startDate = new Date(currentDate), endDate = new Date(startDate),
+    groupID = "K2K3ZY5AE2ZA", selectedDiscipline = 'all';
+
 startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок поточного тижня
-let endDate = new Date(startDate);
 endDate.setDate(startDate.getDate() + 4); // П'ятниця поточного тижня
 
-// Форматування дат
-let formattedStartDate = formatDate(startDate);
-let formattedEndDate = formatDate(endDate);
+// Отримуємо розклад для групи
+const fetchSchedule = () => {
+    const formattedStartDate = formatDate(startDate), formattedEndDate = formatDate(endDate);
+    const url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
 
-// Група за замовчуванням (КН-11)
-let groupID = "K2K3ZY5AE2ZA";
+    titleGroup.textContent = (groupID === "K2K3ZY5AE2ZA") ? "Розклад занять групи КН-11" : "Розклад занять групи КН-12";
 
-// Формуємо URL для запиту
-function fetchSchedule() {
-    formattedStartDate = formatDate(startDate); // Оновлюємо форматовану початкову дату
-    formattedEndDate = formatDate(endDate); // Оновлюємо форматовану кінцеву дату
-
-    let url = `https://vnz.osvita.net/WidgetSchedule.asmx/GetScheduleDataX?callback=jsonp&_=1727543390250&aVuzID=11613&aStudyGroupID=%22${groupID}%22&aStartDate=%22${formattedStartDate}%22&aEndDate=%22${formattedEndDate}%22&aStudyTypeID=null`;
-    if (groupID=="K2K3ZY5AE2ZA"){
-        titleGroup.textContent = "Розклад занять групи КН-11"}
-        else{
-            titleGroup.textContent = "Розклад занять групи КН-12"
-        }
     const script = document.createElement('script');
     script.src = url;
     document.body.appendChild(script);
-}
+};
 
-// Обробник JSONP відповіді
+// Відображення отриманого JSONP розкладу
 function jsonp(data) {
-    const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
-    scheduleTable.innerHTML = '';  // Очищуємо таблицю
-
+    scheduleTable.innerHTML = '';
     data.d.forEach(row => {
-        let newRow = scheduleTable.insertRow();
-        let rowDate = new Date(row.full_date);
+        const rowDate = new Date(row.full_date), newRow = scheduleTable.insertRow();
 
-        // Виділення рядків для сьогоднішнього дня
-        if (rowDate.toDateString() === currentDate.toDateString()) {
-            newRow.classList.add('today-row');
-        }
-
-        newRow.insertCell(0).innerText = row.full_date;
-        newRow.insertCell(1).innerText = row.study_time_begin + ' - ' + row.study_time_end;
-        newRow.insertCell(2).innerText = row.discipline;
-        newRow.insertCell(3).innerText = row.study_type;
-        newRow.insertCell(4).innerText = row.cabinet;
-        newRow.insertCell(5).innerText = row.employee;
+        newRow.classList.toggle('today-row', rowDate.toDateString() === currentDate.toDateString());
+        newRow.innerHTML = `
+            <td>${row.full_date}</td>
+            <td>${row.study_time_begin} - ${row.study_time_end}</td>
+            <td>${row.discipline}</td>
+            <td>${row.study_type}</td>
+            <td>${row.cabinet}</td>
+            <td>${row.employee}</td>`;
     });
+    applyDisciplineFilter();
 }
 
-// Зміна групи
-document.getElementById('groupSelect').addEventListener('change', (event) => {
-    groupID = event.target.value;
-    titleGroup = document.getElementById("titleGroup")
-    if (groupID=="K2K3ZY5AE2ZA"){
-    titleGroup.textContent = "Розклад занять групи КН-11"}
-    else{
-        titleGroup.textContent = "Розклад занять групи КН-12"
-    }
-    fetchSchedule();
-});
-
-// Кнопки для зміни дати
-document.getElementById('prevDate').addEventListener('click', () => {
-    startDate.setDate(startDate.getDate() - 7);
-    endDate.setDate(endDate.getDate() - 7);
-    fetchSchedule();
-});
-
-document.getElementById('currentDate').addEventListener('click', () => {
-    startDate = new Date(currentDate);
-    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Понеділок поточного тижня
-    endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 4); // П'ятниця поточного тижня
-    fetchSchedule();
-});
-
-document.getElementById('nextDate').addEventListener('click', () => {
-    startDate.setDate(startDate.getDate() + 7);
-    endDate.setDate(endDate.getDate() + 7);
-    fetchSchedule();
-});
-
-// Додати обробник події для кнопки зміни теми
-document.getElementById('themeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-});
-
-// Виклик функції отримання розкладу при завантаженні сторінки
-
-document.getElementById('disciplineSelect').addEventListener('change', (event) => {
-    const selectedDiscipline = event.target.value;
-    const rows = scheduleTable.getElementsByTagName('tr');
-    for (let i = 0; i < rows.length; i++) {
-        const disciplineCell = rows[i].cells[2].innerText;
-        rows[i].style.display = (selectedDiscipline === 'all' || disciplineCell === selectedDiscipline) ? '' : 'none';
-    }
-});
-
-fetchSchedule();
-const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
-document.getElementById('exportCSV').addEventListener('click', () => {
-    let csvContent = "data:text/csv;charset=utf-8,";
+// Застосування фільтра вибраної дисципліни
+function applyDisciplineFilter() {
     const rows = scheduleTable.getElementsByTagName('tr');
     for (let row of rows) {
-        const cols = row.getElementsByTagName('td');
-        const rowData = [];
-        for (let col of cols) {
-            rowData.push(col.innerText);
-        }
+        const discipline = row.cells[2].innerText;
+        row.style.display = (selectedDiscipline === 'all' || discipline === selectedDiscipline) ? '' : 'none';
+    }
+}
+
+// Скидання фільтра
+function showAllSchedule() {
+    document.getElementById('exportCSV').style.display ="none"
+    selectedDiscipline = 'all';
+    fetchSchedule();
+}
+
+// Оновлення групи, тижня, дати
+document.getElementById('groupSelect').addEventListener('change', (event) => {
+    groupID = event.target.value;
+    fetchSchedule();
+});
+document.getElementById('disciplineSelect').addEventListener('change', (event) => {
+    selectedDiscipline = event.target.value;
+    applyDisciplineFilter();
+});
+document.getElementById('prevDate').addEventListener('click', () => changeWeek(-7));
+document.getElementById('nextDate').addEventListener('click', () => changeWeek(7));
+document.getElementById('currentDate').addEventListener('click', resetDate);
+
+// Зміна теми
+document.getElementById('themeToggle').addEventListener('click', () => document.body.classList.toggle('dark-theme'));
+
+// Ініціалізація основного розкладу
+fetchSchedule();
+const scheduleTable = document.getElementById('schedule-table').getElementsByTagName('tbody')[0];
+
+// Кнопка експорту CSV
+document.getElementById('exportCSV').addEventListener('click', () => exportToCSV(scheduleTable));
+
+// Показ розкладу при переході між тижнями
+function changeWeek(days) {
+    startDate.setDate(startDate.getDate() + days);
+    endDate.setDate(endDate.getDate() + days);
+    fetchSchedule();
+}
+
+// Повернення до поточного тижня
+function resetDate() {
+    startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1);
+    endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 4);
+    fetchSchedule();
+}
+
+// Експорт до CSV
+function exportToCSV(table) {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    for (let row of table.rows) {
+        const cols = row.cells, rowData = [];
+        for (let col of cols) rowData.push(col.innerText);
         csvContent += rowData.join(",") + "\r\n";
     }
-    const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.setAttribute('href', encodeURI(csvContent));
     link.setAttribute('download', 'schedule.csv');
     document.body.appendChild(link);
     link.click();
-});
-// Оголошення глобальних змінних
-let subjectSummary = {}; // Об'єкт для зберігання підсумків предметів
-
-// Приховуємо кнопку експорту та кнопку для показу увесь розклад при завантаженні
-document.getElementById('exportCSV').style.display = 'none';
-document.getElementById('showAllSchedule').style.display = 'none';
-
-// Додаємо обробник подій для кнопки "Показати висновок"
-document.getElementById('showSummary').addEventListener('click', () => {
-    // Очищуємо старі дані
-    subjectSummary = {};
-    
-
+}
+// Функція для показу підсумку
+function showSummary() {
+    subjectSummary = {}; // Очищаємо старі дані підсумків
+    document.getElementById('exportCSV').style.display ="inline"
+    document.getElementById('groupSelect').style.display ="none"
+    document.getElementById('disciplineSelect').style.display ="none"
+    document.getElementById("showSummary").textContent ="Оновити підсумок"
     // Заповнюємо об'єкт subjectSummary даними з розкладу
     const rows = scheduleTable.getElementsByTagName('tr');
     for (let row of rows) {
@@ -155,22 +128,7 @@ document.getElementById('showSummary').addEventListener('click', () => {
         }
     }
 
-    // Сховати основну таблицю та показати таблицю підсумків
-    document.getElementById('schedule-table').style.display = 'none';
-    scheduleTable.style.display = 'none';
-    document.getElementById('summary-container').style.display = 'block';
-    document.getElementById('showAllSchedule').style.display = 'block';
-    // Сховати інші кнопки
-    document.getElementById('prevDate').style.display = 'none';
-    document.getElementById('currentDate').style.display = 'none';
-    document.getElementById('nextDate').style.display = 'none';
-    document.getElementById('groupSelect').style.display = 'none';
-    document.getElementById('disciplineSelect').style.display = 'none';
-
-    // Показати кнопку експорту
-    document.getElementById('exportCSV').style.display = 'inline-block';
-
-    // Створюємо нову колонку для підсумків
+    // Очищаємо та заповнюємо summaryTable
     const summaryTable = document.getElementById('summary-table');
     summaryTable.innerHTML = ''; // Очищаємо таблицю
     const summaryHeader = summaryTable.createTHead();
@@ -189,7 +147,7 @@ document.getElementById('showSummary').addEventListener('click', () => {
         // Додаємо обробник подій для натискання на предмет
         row.addEventListener('click', () => {
             showDetailedSchedule(discipline);
-            document.getElementById('detailed-container').style.display = 'block'; // Показати деталі
+            document.getElementById('detailed-container').style.display = 'block'; // Показуємо деталі
         });
 
         // Додаємо стиль для рядка
@@ -197,66 +155,17 @@ document.getElementById('showSummary').addEventListener('click', () => {
         row.onmouseover = () => row.style.backgroundColor = '#8fbcff'; // Зміна кольору при наведенні
         row.onmouseout = () => row.style.backgroundColor = ''; // Відновлення кольору
     }
-});
 
-// Додаємо обробник подій для кнопки "Показати увесь розклад"
-document.getElementById('showAllSchedule').addEventListener('click', () => {
-    // Очищення всіх таблиць
-    clearSummaryTable();
-    clearDetailedTable();
-    clearMainTable();
-    document.getElementById('schedule-table').style.display = 'block';
-
-    // Повертаємося до основного розкладу
-    fetchSchedule(); // Викликаємо функцію для отримання основного розкладу
-    document.getElementById('showAllSchedule').style.display = 'none';
-    // Сховати таблицю підсумків та показати основну таблицю
-    document.getElementById('summary-container').style.display = 'none';
-    document.getElementById('detailed-container').style.display = 'none';
-    scheduleTable.style.display = 'block';
-
-    // Показати інші кнопки
-    document.getElementById('prevDate').style.display = 'inline-block';
-    document.getElementById('currentDate').style.display = 'inline-block';
-    document.getElementById('nextDate').style.display = 'inline-block';
-    document.getElementById('groupSelect').style.display = 'inline-block';
-    document.getElementById('disciplineSelect').style.display = 'inline-block';
-
-    // Сховати кнопку експорту
-    document.getElementById('exportCSV').style.display = 'none';
-});
-
-// Функція для очищення таблиці підсумків
-function clearSummaryTable() {
-    const summaryTable = document.getElementById('summary-table');
-    summaryTable.innerHTML = ''; // Очищаємо таблицю
+    // Сховати основну таблицю та показати таблицю підсумків
+    document.getElementById('schedule-table').style.display = 'none';
+    document.getElementById('summary-container').style.display = 'block';
 }
 
-// Функція для очищення таблиці з детальною інформацією
-function clearDetailedTable() {
-    const detailedTable = document.getElementById('detailed-table');
-    detailedTable.innerHTML = ''; // Очищаємо таблицю
-}
-function clearMainTable() {
-    const scheduletable = document.getElementById('schedule-table');
-    scheduletable.innerHTML = `<table id="schedule-table">
-        <thead>
-            <tr>
-                <th>Дата</th>
-                <th>Час</th>
-                <th>Дисципліна</th>
-                <th class="study-type">Тип заняття</th>
-                <th>Аудиторія</th>
-                <th>Викладач</th>
-            </tr>
-        </thead>
-        <tbody></tbody>`; // Очищаємо таблицю
-}
 // Функція для показу детального розкладу
 function showDetailedSchedule(discipline) {
     const detailedTable = document.getElementById('detailed-table');
     detailedTable.innerHTML = ''; // Очищаємо таблицю
-    clearMainTable();
+
     const detailedHeader = detailedTable.createTHead();
     const headerRow = detailedHeader.insertRow();
     headerRow.insertCell(0).innerText = 'Дата';
@@ -284,21 +193,19 @@ function showDetailedSchedule(discipline) {
     if (detailedBody.rows.length === 0) {
         const messageRow = detailedBody.insertRow();
         const messageCell = messageRow.insertCell(0);
-        messageCell.colSpan = 5; // Зливайте стовпці
+        messageCell.colSpan = 5; // Злийте стовпці
         messageCell.innerText = 'Немає деталей для цього предмета';
     }
 }
 
-// Сховати таблицю з детальною інформацією при перезавантаженні підсумків
-document.getElementById('summary-table').addEventListener('click', () => {
-    document.getElementById('detailed-container').style.display = 'block';
+// Додаємо обробник події для кнопки "Показати підсумок"
+document.getElementById('showSummary').addEventListener('click', showSummary);
+
+// Обробник для кнопки "Показати увесь розклад"
+document.getElementById('showAllSchedule').addEventListener('click', () => {
+    document.getElementById('summary-container').style.display = 'none';
+    document.getElementById('detailed-container').style.display = 'none';
+    document.getElementById('schedule-table').style.display = 'block';
+    document.getElementById('exportCSV').style.display ="inline"
+    fetchSchedule(); // Оновлюємо розклад
 });
-
-// Сховати деталі розкладу при завантаженні сторінки
-document.getElementById('detailed-container').style.display = 'none';
-
-// Сховати таблицю підсумків при завантаженні сторінки
-document.getElementById('summary-container').style.display = 'none';
-
-// Виклик функції для отримання основного розкладу
-fetchSchedule();

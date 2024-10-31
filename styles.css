@@ -16,6 +16,7 @@ body {
 .date-controls {
     margin-bottom: 20px;
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -191,4 +192,8 @@ select:hover{
 }
 .dark-theme #summary-table thead,.dark-theme #detailed-table thead {
     background-color: #555;
+}
+#titleGroup{
+    display: flex;
+    justify-content: center;
 }
